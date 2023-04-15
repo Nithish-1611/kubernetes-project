@@ -1,0 +1,42 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-demo-test
+spec:
+  containers:
+    - name: pod-demo-test-ctr
+      image: alpine
+      command: ["sleep", "3600"]
+      env:
+        - name: level
+          valueFrom:
+            configMapKeyRef:
+              name: config-demo-test
+              key: levels
+
+        - name: file_name
+          valueFrom:
+            configMapKeyRef:
+              name: config-demo-test
+              key: level_properties_file_name
+
+        - name: file
+          valueFrom:
+            configMapKeyRef:
+              name: config-demo-test
+              key: level.properties
+
+      volumeMounts:
+        - name: config
+          mountPath: "/config"
+          readOnly: true
+  volumes:
+  #you set the volumes at the pod level, then mount them into containers inside that pod
+    - name: config
+      configMap:
+    #provide th name of the ConfigMap you want ton mount.
+       name: config-demo-test
+    #An array of keys from the ConfigMap to c reate as files
+       items:
+        - key: "level.properties"
+          path: "level.properties"

@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: config-demo-test
+data:
+  #property-like keys; each key maps to a simple value
+  levels: "12"
+  level_properties_file_name: "config-demo.properties"
+
+  #file-like keys
+  level.properties: |
+    level.types=easy,medium,hard
+    level.maximum-level=13
+
+
